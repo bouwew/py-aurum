@@ -25,17 +25,13 @@ class Aurum:
             xml = self._session.get(url)
             xml.raise_for_status()
         except requests.exceptions.HTTPError as errh:
-            #_LOGGER.error("Http Error:",errh)
-            print("Http Error:",errh)
+            _LOGGER.error("Http Error:", errh)
         except requests.exceptions.ConnectionError as errc:
-            #_LOGGER.error("Error Connecting:",errc)
-            print("Error Connecting:",errc)
+            _LOGGER.error("Error Connecting:", errc)
         except requests.exceptions.Timeout as errt:
-            #_LOGGER.error("Timeout Error:",errt)
-            print("Timeout Error:",errt)
+            _LOGGER.error("Timeout Error:", errt)
         except requests.exceptions.RequestException as err:
-            #_LOGGER.error("OOps: Something Else",err)
-            print("OOps: Something Else",err)
+            _LOGGER.error("OOps: Something Else", err)
 
         if xml is not None:
             result = xml.text

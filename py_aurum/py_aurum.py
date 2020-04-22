@@ -52,7 +52,6 @@ class Aurum:
                     else:
                         value = float("{:.2f}".format(round(float(value), 2)))
                     
-                if value != 0:
-                    data[idx] =  {sensor: value}
+                data[idx] =  {sensor: value}
                 idx += 1
             return data

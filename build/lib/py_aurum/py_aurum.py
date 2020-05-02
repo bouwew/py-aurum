@@ -54,7 +54,6 @@ class Aurum:
             return await self.connect(retry - 1)
 
         result = await resp.text()
-        _LOGGER.debug("Collecting data from the Aurum meetstekker: %s", result)
         root = etree.fromstring(result)
         idx = 1
         for item in root:

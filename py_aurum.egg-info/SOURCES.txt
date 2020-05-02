@@ -1,0 +1,10 @@
+README.md
+setup.py
+py_aurum/__init__.py
+py_aurum/py_aurum.py
+py_aurum.egg-info/PKG-INFO
+py_aurum.egg-info/SOURCES.txt
+py_aurum.egg-info/dependency_links.txt
+py_aurum.egg-info/not-zip-safe
+py_aurum.egg-info/requires.txt
+py_aurum.egg-info/top_level.txt

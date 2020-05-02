@@ -1,1 +1,3 @@
-from py_aurum import py_aurum
+__version__ = '0.1.1
+'
+from .py_aurum import Aurum

@@ -108,16 +108,16 @@ class Aurum:
                     value = float("{:.1f}".format(round(float(value), 1)))
                 else:
                     value = float("{:.2f}".format(round(float(value), 2)))
-                
+
             data[idx] =  {sensor: value}
             idx += 1
         return data
- 
+
     async def update_data(self):
         """Connect to the Aurum meetstekker."""
         new_data = await self._get_data()
         if new_data is not None:
-            _LOGGER.data("Aurum data: %s", new_data)
+            _LOGGER.debug("Aurum data: %s", new_data)
             return new_data
         _LOGGER.error("Aurum data missing")
         raise self.XMLDataMissingError

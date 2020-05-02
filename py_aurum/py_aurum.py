@@ -118,6 +118,9 @@ class Aurum:
         new_data = await self._get_data()
         if new_data is not None:
             self._aurum_data = new_data
+        else:
+            _LOGGER.error("Aurum data missing")
+            raise self.XMLDataMissingError
 
 
     class AurumError(Exception):
@@ -131,3 +134,6 @@ class Aurum:
 
     class ResponseError(AurumError):
         """Raised when empty or error in response returned."""
+
+    class XMLDataMissingError(AurumError):
+        """Raised when xml data is empty."""

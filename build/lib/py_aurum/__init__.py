@@ -1,1 +1,1 @@
-from .py_aurum import Aurum
+from py_aurum import py_aurum

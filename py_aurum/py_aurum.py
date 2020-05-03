@@ -48,10 +48,10 @@ class Aurum:
         try:
             with async_timeout.timeout(self._timeout):
                 resp = await self.websession.get(url)
-        except (asyncio.TimeoutError, aiohttp.ClientError):
+        except (asyncio.TimeoutError, aiohttp.client_exceptions.ClientConnectorError):
             if retry < 1:
                 _LOGGER.error("Error connecting to the Aurum meetstekker", exc_info=True)
-                raise self.ConnectionFailedError
+                raise self.ConnectionFailedError("Error connecting")
             return await self.connect(retry - 1)
 
         result = await resp.text()

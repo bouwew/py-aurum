@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name='py_aurum',
-    version='0.1.6',
+    version='0.1.7',
     description='Aurum API to use in conjunction with Home Assistant Core.',
     long_description='Aurum Meetstekker API to use in conjunction with Home Assistant Core.',
     keywords='Home Assistant HA Core Aurum',

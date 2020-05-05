@@ -37,7 +37,7 @@ class Aurum:
 
         self._endpoint = 'http://' + host + ':' + str(port)
         self._timeout = timeout
-        self._aurum_data = None
+        self._aurum_data = {}
 
     async def connect(self, retry=2):
         """Connect to the Aurum meetstekker."""
@@ -118,7 +118,7 @@ class Aurum:
         new_data = await self._get_data()
         if new_data is not None:
             _LOGGER.debug("Aurum data: %s", new_data)
-            return new_data
+            self._aurum_data = new_data
         _LOGGER.error("Aurum data missing")
         raise self.XMLDataMissingError
 

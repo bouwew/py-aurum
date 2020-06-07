@@ -38,25 +38,15 @@ class Aurum:
         else:
             self.websession = websession
 
-        self._endpoint = 'http://' + host + ':' + str(port)
-        self._timeout = timeout
         self._aurum_data = {}
-
-    async def close_connection(self):
-        """Close the Aurum connection."""
-        await self.websession.close()
-
-    def sync_close_connection(self):
-        """Close the Aurum connection."""
-        loop = asyncio.get_event_loop()
-        task = loop.create_task(self.close_connection())
-        loop.run_until_complete(task)
+        self._endpoint = f"http://{host}:{str(port)}" 
+        self._timeout = timeout
 
     async def connect(self, retry=2):
         """Connect to the Aurum meetstekker."""
         # pylint: disable=too-many-return-statements
         data = {}
-        url = self._endpoint + AURUM_DATA
+        url = f"{self._endpoint}{AURUM_DATA}"
 
         try:
             with async_timeout.timeout(self._timeout):
@@ -72,10 +62,13 @@ class Aurum:
         idx = 1
         for item in root:
             sensor = item.tag
-            value = item.get("value")
             if sensor == "smartMeterTimestamp":
                 _LOGGER.debug("Connected to the Aurum meetstekker")
                 return True
+
+    async def close_connection(self):
+        """Close the Aurum connection."""
+        await self.websession.close()
 
     async def _get_data(self, retry=2):
         """Connect to the Aurum meetstekker."""
@@ -121,12 +114,6 @@ class Aurum:
             data[idx] =  {sensor: value}
             idx += 1
         return data
-
-    def sync_update_data(self, *_):
-        """Update home info."""
-        loop = asyncio.get_event_loop()
-        task = loop.create_task(self.update_data())
-        loop.run_until_complete(task)
 
     async def update_data(self):
         """Connect to the Aurum meetstekker."""

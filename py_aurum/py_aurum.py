@@ -45,7 +45,6 @@ class Aurum:
     async def connect(self, retry=2):
         """Connect to the Aurum meetstekker."""
         # pylint: disable=too-many-return-statements
-        data = {}
         url = f"{self._endpoint}{AURUM_DATA}"
 
         try:
@@ -55,11 +54,23 @@ class Aurum:
             if retry < 1:
                 _LOGGER.error("Error connecting to the Aurum meetstekker", exc_info=True)
                 raise self.ConnectionFailedError("Error connecting")
+                return False
             return await self.connect(retry - 1)
 
-        result = await resp.text()
+        try:
+            result = await resp.text()
+        except asyncio.TimeoutError:
+            _LOGGER.error("Timed out reading response from the Aurum meetstekker")
+            raise self.DeviceTimeoutError
+
+        # Command accepted gives empty body with status 202
+        if resp.status == 202:
+            return
+
+        if not result or "error" in result:
+            raise self.ResponseError
+
         root = etree.fromstring(result)
-        idx = 1
         for item in root:
             sensor = item.tag
             if sensor == "smartMeterTimestamp":
@@ -70,11 +81,11 @@ class Aurum:
         """Close the Aurum connection."""
         await self.websession.close()
 
-    async def _get_data(self, retry=2):
+    async def __get_data(self, retry=2):
         """Connect to the Aurum meetstekker."""
         # pylint: disable=too-many-return-statements
         data = {}
-        url = self._endpoint + AURUM_DATA
+        url = f"{self._endpoint}{AURUM_DATA}"
 
         try:
             with async_timeout.timeout(self._timeout):
@@ -113,11 +124,12 @@ class Aurum:
 
             data[idx] =  {sensor: value}
             idx += 1
+
         return data
 
     async def update_data(self):
         """Connect to the Aurum meetstekker."""
-        new_data = await self._get_data()
+        new_data = await self.__get_data()
         if new_data is not None:
             _LOGGER.debug("Aurum data: %s", new_data)
             self._aurum_data = new_data

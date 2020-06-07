@@ -81,7 +81,7 @@ class Aurum:
         """Close the Aurum connection."""
         await self.websession.close()
 
-    async def __get_data(self, retry=2):
+    async def get_data(self, retry=2):
         """Connect to the Aurum meetstekker."""
         # pylint: disable=too-many-return-statements
         data = {}
@@ -125,11 +125,13 @@ class Aurum:
             data[idx] =  {sensor: value}
             idx += 1
 
-        return data
+        if data != {}:
+            return data
+        return None
 
     async def update_data(self):
         """Connect to the Aurum meetstekker."""
-        new_data = await self.__get_data()
+        new_data = await self.get_data()
         if new_data is not None:
             _LOGGER.debug("Aurum data: %s", new_data)
             self._aurum_data = new_data

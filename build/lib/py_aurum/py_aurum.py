@@ -38,7 +38,6 @@ class Aurum:
         else:
             self.websession = websession
 
-        self._aurum_data = {}
         self._endpoint = f"http://{host}:{str(port)}" 
         self._timeout = timeout
 
@@ -81,7 +80,7 @@ class Aurum:
         """Close the Aurum connection."""
         await self.websession.close()
 
-    async def get_data(self, retry=2):
+    async def update_data(self, retry=2):
         """Connect to the Aurum meetstekker."""
         # pylint: disable=too-many-return-statements
         data = {}
@@ -127,16 +126,9 @@ class Aurum:
 
         if data != {}:
             return data
-        return None
-
-    async def update_data(self):
-        """Connect to the Aurum meetstekker."""
-        new_data = await self.get_data()
-        if new_data is not None:
-            _LOGGER.debug("Aurum data: %s", new_data)
-            self._aurum_data = new_data
         _LOGGER.error("Aurum data missing")
         raise self.XMLDataMissingError
+        return None
 
 
     class AurumError(Exception):

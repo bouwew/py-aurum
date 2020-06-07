@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: py-aurum
-Version: 0.1.12
+Version: 0.1.13
 Summary: Aurum API to use in conjunction with Home Assistant Core.
 Home-page: https://github.com/bouwew/py_aurum
 Author: @bouwew

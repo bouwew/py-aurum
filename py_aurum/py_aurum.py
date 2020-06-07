@@ -84,7 +84,6 @@ class Aurum:
     async def update_data(self, retry=2):
         """Connect to the Aurum meetstekker."""
         # pylint: disable=too-many-return-statements
-        new_data = {}
         url = f"{self._endpoint}{AURUM_DATA}"
 
         try:
@@ -109,9 +108,13 @@ class Aurum:
         if not result or "error" in result:
             raise self.ResponseError
 
-        root = etree.fromstring(result)
+        self._aurum_data = etree.fromstring(result)
+
+    def get_aurum_data(self):
+        """Connect to the Aurum meetstekker."""
+        new_data = {}
         idx = 1
-        for item in root:
+        for item in self._aurum_data:
             sensor = item.tag
             value = item.get("value")
             if sensor != "smartMeterTimestamp":
@@ -122,19 +125,14 @@ class Aurum:
                 else:
                     value = float("{:.2f}".format(round(float(value), 2)))
 
-            new_data[idx] =  {sensor: value}
+            new_data[idx] = {sensor: value}
             idx += 1
 
-        self._aurum_data = new_data
-
-    async def get_aurum_data(self):
-        """Connect to the Aurum meetstekker."""
-        data = await self._aurum_data()
-        if data != {}:
+        if new_data == {}:
             _LOGGER.error("Aurum data missing")
             raise self.XMLDataMissingError
-        return data
-         
+        return new_data
+
 
     class AurumError(Exception):
         """Aurum exceptions class."""

@@ -38,6 +38,7 @@ class Aurum:
         else:
             self.websession = websession
 
+        self._aurum_data = {}
         self._endpoint = f"http://{host}:{str(port)}" 
         self._timeout = timeout
 
@@ -83,7 +84,7 @@ class Aurum:
     async def update_data(self, retry=2):
         """Connect to the Aurum meetstekker."""
         # pylint: disable=too-many-return-statements
-        data = {}
+        new_data = {}
         url = f"{self._endpoint}{AURUM_DATA}"
 
         try:
@@ -121,15 +122,19 @@ class Aurum:
                 else:
                     value = float("{:.2f}".format(round(float(value), 2)))
 
-            data[idx] =  {sensor: value}
+            new_data[idx] =  {sensor: value}
             idx += 1
 
-        if data != {}:
-            return data
-        _LOGGER.error("Aurum data missing")
-        raise self.XMLDataMissingError
-        return None
+        self._aurum_data = new_data
 
+    async def get_aurum_data(self):
+        """Connect to the Aurum meetstekker."""
+        data = await self._aurum_data()
+        if data != {}:
+            _LOGGER.error("Aurum data missing")
+            raise self.XMLDataMissingError
+        return data
+         
 
     class AurumError(Exception):
         """Aurum exceptions class."""

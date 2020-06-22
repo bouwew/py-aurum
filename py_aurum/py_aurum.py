@@ -65,9 +65,12 @@ class Aurum:
 
         # Command accepted gives empty body with status 202
         if resp.status == 202:
+            _LOGGER.debug(resp.status)
             return
 
         if not result or "error" in result:
+            _LOGGER.error("Something's not right: %s", result)
+            _LOGGER.error(resp.status)
             raise self.ResponseError
 
         root = etree.fromstring(result)
@@ -103,9 +106,12 @@ class Aurum:
 
         # Command accepted gives empty body with status 202
         if resp.status == 202:
+            _LOGGER.debug(resp.status)
             return
 
         if not result or "error" in result:
+            _LOGGER.error("Something's not right: %s", result)
+            _LOGGER.error(resp.status)
             raise self.ResponseError
 
         self._aurum_data = etree.fromstring(result)

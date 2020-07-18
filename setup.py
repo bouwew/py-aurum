@@ -26,6 +26,7 @@ setup(
     long_description='Aurum Meetstekker API to use in conjunction with Home Assistant Core.',
     keywords='Home Assistant HA Core Aurum',
     url='https://github.com/bouwew/py_aurum',
+    download_url='https://github.com/bouwew/py-aurum/archive/v1.0.0.tar.gz',
     author='@bouwew',
     author_email='bouwe.s.westerdijk@gmail.com',
     license='MIT',

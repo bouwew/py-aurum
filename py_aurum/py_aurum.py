@@ -126,11 +126,14 @@ class Aurum:
             if sensor != "smartMeterTimestamp":
                 if sensor == "powerElectricity":
                     value = int(float(value))
-                elif abs(float(value)) > 10:
-                    value = float("{:.1f}".format(round(float(value), 1)))
-                else:
-                    value = float("{:.2f}".format(round(float(value), 2)))
-
+                    if sensor == "counterGas":
+                        value = float("{:.3f}".format(round(float(value), 3)))
+                    else:
+                        if abs(float(value)) > 10:
+                            value = float("{:.1f}".format(round(float(value), 1)))
+                        else:
+                            value = float("{:.2f}".format(round(float(value), 2)))
+                
             new_data[idx] = {sensor: value}
             idx += 1
 

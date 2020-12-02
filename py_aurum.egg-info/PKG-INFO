@@ -1,12 +1,12 @@
 Metadata-Version: 1.1
 Name: py-aurum
-Version: 1.0.0
+Version: 1.0.1
 Summary: Aurum API to use in conjunction with Home Assistant Core.
 Home-page: https://github.com/bouwew/py_aurum
 Author: @bouwew
 Author-email: bouwe.s.westerdijk@gmail.com
 License: MIT
-Download-URL: https://github.com/bouwew/py-aurum/archive/v1.0.0.tar.gz
+Download-URL: https://github.com/bouwew/py-aurum/archive/v1.0.1.tar.gz
 Description: Aurum Meetstekker API to use in conjunction with Home Assistant Core.
 Keywords: Home Assistant HA Core Aurum
 Platform: UNKNOWN

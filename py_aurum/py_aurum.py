@@ -98,7 +98,7 @@ class Aurum:
             if retry < 1:
                 _LOGGER.error("Timed out getting data from the Aurum meetstekker")
                 raise self.DeviceTimeoutError
-            return await self.request(command, retry - 1)
+            return await self.update_data(retry - 1)
 
         try:
             result = await resp.text()

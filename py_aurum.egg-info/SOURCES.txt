@@ -1,4 +1,5 @@
 README.md
+setup.cfg
 setup.py
 py_aurum/__init__.py
 py_aurum/py_aurum.py

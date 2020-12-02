@@ -1,7 +1,7 @@
 """Aurum Core module."""
 import asyncio
 import logging
-from lxml import etree
+from defusedxml import ElementTree as etree
 
 import aiohttp
 import async_timeout
@@ -39,8 +39,8 @@ class Aurum:
             self.websession = websession
 
         self._aurum_data = {}
-        self._endpoint = f"http://{host}:{str(port)}" 
-        self._timeout = timeout
+        self._endpoint = f"http://{host}:{str(port)}"
+        self._timeout = DEFAULT_TIMEOUT
 
     async def connect(self, retry=2):
         """Connect to the Aurum meetstekker."""
@@ -52,7 +52,9 @@ class Aurum:
                 resp = await self.websession.get(url)
         except (asyncio.TimeoutError, aiohttp.client_exceptions.ClientConnectorError):
             if retry < 1:
-                _LOGGER.error("Error connecting to the Aurum meetstekker", exc_info=True)
+                _LOGGER.error(
+                    "Error connecting to the Aurum meetstekker", exc_info=True
+                )
                 raise self.ConnectionFailedError("Error connecting")
                 return False
             return await self.connect(retry - 1)
@@ -120,6 +122,7 @@ class Aurum:
         """Connect to the Aurum meetstekker."""
         new_data = {}
         idx = 1
+        sensor = value = None
         for item in self._aurum_data:
             sensor = item.tag
             value = item.get("value")
@@ -133,7 +136,7 @@ class Aurum:
                             value = float("{:.1f}".format(round(float(value), 1)))
                         else:
                             value = float("{:.2f}".format(round(float(value), 2)))
-                
+
             new_data[idx] = {sensor: value}
             idx += 1
 
@@ -141,7 +144,6 @@ class Aurum:
             _LOGGER.error("Aurum data missing")
             raise self.XMLDataMissingError
         return new_data
-
 
     class AurumError(Exception):
         """Aurum exceptions class."""
